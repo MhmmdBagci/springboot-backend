@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Github Code') {
+            steps {
+                git 'https://github.com/MhmmdBagci/springboot-backend.git'
+            }
+        }
+        stage('Build Project') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy Message') {
+            steps {
+                echo 'Deployment erfolgreich'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning workspace'
+            sh 'rm -rf ./*'
+        }
+        success {
+            echo 'Pipeline erfolgreich abgeschlossen.'
+        }
+        failure {
+            echo 'Pipeline fehlgeschlagen.'
+        }
+    }
+}
