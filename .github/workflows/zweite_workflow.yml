@@ -1,0 +1,21 @@
+name: Zweite Workflow # name des workflows
+
+on: 
+  workflow_dispatch: # dafür da das er manuel gestartet wird
+env:
+  ZIP_FILE: "Introduction.7z"
+jobs:
+  Explore-Github-Actions:
+    runs-on: ubuntu-latest # ubuntu maschine/Umgebung
+    steps:
+      - name: 7zip # ist nur der name
+        run: sudo apt update && sudo apt install -y p7zip-full # update & instalation 
+
+      - name: Cloned Introduction Repository
+        run: git clone https://github.com/MhmmdBagci/Introduction.git # clone befehl meiner repo
+
+      - name: 7zip komprimierung # nur der name 
+        run: 7z a -t7z ${{env.ZIP_FILE}} ./Introduction # meine repo wird in eine 7zip datei komprimiert
+
+      - name: Abschluss
+        run: echo "Vorgang Abgeschlossen" # meldung für den abschluss das es geklappt hat
