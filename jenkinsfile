@@ -17,9 +17,10 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('Deploy Message') {
+        stage('Deploy') {
             steps {
                 echo 'Deployment erfolgreich ausgeführt'
+                sh '7z a -t7z ./springboot-backend.git'
             }
         }
     }
