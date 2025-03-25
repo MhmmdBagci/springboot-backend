@@ -1,17 +1,29 @@
-name: Erste Workflow
-on:
-  push:
-    branches: 
-      - production
-jobs: 
-  Explore-Github-Actions:
+name: CI/CD Backend
+
+on: push
+
+jobs:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: First Step
-        env:
-          NAME: "Muhammed"
-        run: |
-          echo "Hello World"
-          echo ${{ env.NAME }}
+      - name: repository
+        uses: actions/checkout@v3
 
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Deploy
+        run: echo 'Backend wurde erfolgreich deployt!'
+
+      - name: Clean up
+        run: rm -rf *
