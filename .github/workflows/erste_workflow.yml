@@ -5,27 +5,47 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --host=127.0.0.1 --user=root --password=root"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
-      - name: repository
+      - name: Code auschecken
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: JDK einrichten
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven
+      - name: Abhängigkeiten mit Maven auflösen
+        run: mvn clean install -DskipTests
+
+      - name: Backend mit Maven bauen
         run: mvn clean package
 
-      - name: Run Tests
+      - name: Tests ausführen
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/testdb
+          SPRING_DATASOURCE_USERNAME: user
+          SPRING_DATASOURCE_PASSWORD: password
         run: mvn test
 
-      - name: Deploy
-        run: echo 'Backend wurde erfolgreich deployt!'
+      - name: Deployment (nur Beispiel)
+        run: echo "Das Backend wurde erfolgreich deployed!"
 
-      - name: Clean up (nach Build & Tests)
-        if: success()
+      - name: Cleanup
         run: rm -rf target
-      
