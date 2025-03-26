@@ -15,11 +15,6 @@ jobs:
           MYSQL_PASSWORD: password
         ports:
           - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --host=127.0.0.1 --user=root --password=root"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
       - name: Code auschecken
@@ -31,31 +26,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Warten, bis MySQL bereit ist
-        run: |
-          echo "Warte auf MySQL..."
-          for i in {1..10}; do
-            nc -zv 127.0.0.1 3306 && echo "MySQL ist bereit!" && exit 0
-            echo "MySQL noch nicht bereit, warte..."
-            sleep 3
-          done
-          echo "MySQL ist nicht erreichbar!" && exit 1
-
-      - name: Abhängigkeiten mit Maven auflösen
-        run: mvn clean install -DskipTests
-
-      - name: Backend mit Maven bauen
-        run: mvn clean package
-
-      - name: Tests ausführen
+      - name: Backend bauen und testen
         env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/testdb
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: user
           SPRING_DATASOURCE_PASSWORD: password
-        run: mvn test
-
-      - name: Deployment (nur Beispiel)
-        run: echo "Das Backend wurde erfolgreich deployed!"
-
-      - name: Cleanup
-        run: rm -rf target
+        run: mvn clean package test
