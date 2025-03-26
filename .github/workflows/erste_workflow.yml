@@ -19,7 +19,7 @@ jobs:
           --health-cmd="mysqladmin ping --host=127.0.0.1 --user=root --password=root"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=3
+          --health-retries=5
 
     steps:
       - name: Code auschecken
@@ -30,6 +30,16 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Warten, bis MySQL bereit ist
+        run: |
+          echo "Warte auf MySQL..."
+          for i in {1..10}; do
+            nc -zv 127.0.0.1 3306 && echo "MySQL ist bereit!" && exit 0
+            echo "MySQL noch nicht bereit, warte..."
+            sleep 3
+          done
+          echo "MySQL ist nicht erreichbar!" && exit 1
 
       - name: Abhängigkeiten mit Maven auflösen
         run: mvn clean install -DskipTests
