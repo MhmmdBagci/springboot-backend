@@ -25,5 +25,7 @@ jobs:
       - name: Deploy
         run: echo 'Backend wurde erfolgreich deployt!'
 
-      - name: Clean up
-        run: rm -rf *
+      - name: Clean up (nach Build & Tests)
+        if: success()
+        run: rm -rf target
+      
