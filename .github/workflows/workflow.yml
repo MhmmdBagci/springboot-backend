@@ -1,0 +1,19 @@
+name: CI/CD Backend
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v3
+
+      - name: JDK einrichten
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Backend bauen und testen
+        run: mvn clean package test
