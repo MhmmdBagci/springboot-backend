@@ -1,12 +1,6 @@
 name: CI/CD Backend Pipeline
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: push
 
 jobs:
   build-and-test:
@@ -28,5 +22,5 @@ jobs:
       - name: Projekt bauen & testen
         run: mvn clean package
 
-      - name: Deployment (simuliert)
+      - name: Deployment
         run: echo "Deployment erfolgreich!"
