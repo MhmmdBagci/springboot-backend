@@ -5,15 +5,19 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Code auschecken
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: JDK einrichten
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Backend bauen und testen
-        run: mvn clean package test
+      - name: Build and Test with Maven
+        run: mvn clean package
+
+      - name: Deploy
+        run: echo "Backend wurde erfolgreich gebaut und getestet!"
