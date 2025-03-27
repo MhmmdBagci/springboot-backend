@@ -1,12 +1,7 @@
-name: Java Maven CI
+name: CI/CD BACKEND
 
-on:
+on: 
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
@@ -29,4 +24,4 @@ jobs:
         run: mvn test
         
       - name: Deploy
-        run: echo "Deployment erfolgreich ausgeführt" # Simuliertes Deployment
+        run: echo "Deployment erfolgreich ausgeführt" 
