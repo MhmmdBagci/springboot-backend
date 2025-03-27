@@ -1,26 +1,32 @@
-name: CI/CD Backend
+name: CI/CD Backend Pipeline
 
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Java einrichten
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '17'
 
-      - name: Build mit Maven
+      - name: Maven Abhängigkeiten herunterladen
+        run: mvn dependency:go-offline
+
+      - name: Projekt bauen & testen
         run: mvn clean package
 
-      - name: Tests ausführen
-        run: mvn test
-
-      - name: Simuliertes Deployment
+      - name: Deployment (simuliert)
         run: echo "Deployment erfolgreich!"
