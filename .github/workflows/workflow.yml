@@ -1,7 +1,7 @@
 name: CI/CD BACKEND
 
 on: 
-  push:
+  push
 
 jobs:
   build:
@@ -24,21 +24,21 @@ jobs:
           --health-retries=5
           
     steps:
-      - name: Checkout Repository
+      - name: Checkout mein Repo
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Setup java
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build and Test with Maven
+      - name: Build und Test
         run: mvn clean package
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: user
           SPRING_DATASOURCE_PASSWORD: password
 
-      - name: Deploy
+      - name: Deploy simulation mit echo
         run: echo "Backend wurde erfolgreich gebaut und getestet!"
