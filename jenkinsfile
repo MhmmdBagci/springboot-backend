@@ -10,21 +10,26 @@ pipeline {
         
         stage('Build Project') {
             steps {
-                sh 'mvn clean package -DskipTests=true' // Build ohne Tests
+                sh 'mvn clean package'
             }
         }
         
         stage('Test') {
             steps {
-                sh 'mvn test' // Tests ausführen
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Speichern') {
+            steps {
+                script {
+                    sh '7z a build_artifacts.zip target/*'                  }
             }
         }
         
         stage('Deploy') {
             steps {
-                echo 'Deployment erfolgreich ausgeführt' // Simuliertes Deployment mit echo
-                // Hier würde ein echtes Deployment-Skript stehen
-                // Beispiel: sh 'docker-compose up -d'
+                echo 'Deployment erfolgreich ausgeführt'
             }
         }
     }
@@ -32,7 +37,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning workspace'
-            sh 'rm -rf ./*' // Workspace aufräumen
+            sh 'rm -rf ./*'
         }
         success {
             echo 'Pipeline erfolgreich abgeschlossen.'
