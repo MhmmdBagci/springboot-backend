@@ -1,6 +1,6 @@
 name: CI/CD BACKEND
 
-on: 
+on:
   push:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping --host=localhost --user=root --password=root"
+          --health-cmd="mysqladmin ping --host=mysql --user=root --password=root"  # Hostname auf 'mysql' ändern
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -36,7 +36,7 @@ jobs:
       - name: Build and Test with Maven
         run: mvn clean package
         env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/testdb   # Hier den MySQL-Service als Host verwenden
+          SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/testdb   # URL anpassen, 'localhost' zu 'mysql'
           SPRING_DATASOURCE_USERNAME: user
           SPRING_DATASOURCE_PASSWORD: password
 
