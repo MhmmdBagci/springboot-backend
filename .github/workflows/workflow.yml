@@ -40,5 +40,8 @@ jobs:
           SPRING_DATASOURCE_USERNAME: user
           SPRING_DATASOURCE_PASSWORD: password
 
+      - name: Anwendung verpacken mit 7zip
+        run: 7z a backend-application.7z target/*
+
       - name: Deploy simulation mit echo
         run: echo "Backend wurde erfolgreich gebaut und getestet!"
