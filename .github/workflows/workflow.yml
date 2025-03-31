@@ -34,7 +34,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build und Test
-        run: mvn clean package
+        run: mvn clean test package
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: user
